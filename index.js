@@ -2,7 +2,9 @@ const express = require('express')
 
 const app = express()
 
-const phoneBook = [
+//app.use(express.json())
+
+let phoneBook = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -40,10 +42,18 @@ app.get('/api/persons/:id', (req, res) => {
     if(phone) {
         res.json(phone)
     } else {
-        res.status(404).end("note was not find")
+        res.status(404).end()
     }
 
 })
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    phoneBook = phoneBook.filter(n => n.id !== id)
+
+    res.status(204).end()
+  })
+
 
 const PORT = 3001
 app.listen(PORT, () => {
