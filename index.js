@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = express()
 
-//app.use(express.json())
+app.use(express.json())
 
 let phoneBook = [
     { 
@@ -29,6 +29,37 @@ let phoneBook = [
 
 app.get('/api/persons', (req, res) => {
     res.json(phoneBook)
+})
+
+const generateId = () => {
+    const id = Math.floor(Math.random() * 10000000);
+    return id;
+  }
+
+
+  app.post('/api/persons', (req, res) => {
+    const body = req.body
+    const sameName = phoneBook.some(n => n.name === body.name)
+
+    if(!body.name || !body.number) {
+        return res.status(400).json({
+            error: 'name or number missing'
+        })
+    } else if(sameName) {
+        return res.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
+    const phone = {
+        id : generateId(),
+        name: body.name,
+        number: body.number
+    }
+
+    phoneBook = phoneBook.concat(phone)
+
+    res.json(phone)
 })
 
 app.get('/info', (req, res) => {
