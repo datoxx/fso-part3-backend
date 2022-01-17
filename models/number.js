@@ -15,8 +15,8 @@ mongoose.connect(url)
   })
 
   const notebook = new mongoose.Schema({
-    name: {type: String, required: true, unique: true},
-    number: {type:  String, required: true}
+    name: {type: String, required: true, unique: true, minLength: 3},
+    number: {type:  String, required: true, minLength: 8}
 });
 
 notebook.plugin(uniqueValidator);
